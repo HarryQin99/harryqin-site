@@ -22,7 +22,7 @@ test("editxiaobian page", async ({ page }) => {
   await expect(site).toHaveAttribute("target", "_blank");
   await expect(page.locator("figure img")).toHaveAttribute("alt", /EditXiaobian workspace/);
   await expect(page.locator("figcaption")).toHaveText(
-    "The project workspace: schedule, brand brief, then outline and script.",
+    "The workspace home: recent projects, upcoming deadlines, and shortcuts.",
   );
   const body = page.locator("main");
   await expect(body).toContainText("I owned most of the money path.");

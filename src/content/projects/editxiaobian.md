@@ -10,8 +10,8 @@ links:
   - label: edixiaobian.com ↗
     href: https://edixiaobian.com/
 cover: ../../assets/exb-workspace.jpg
-coverAlt: "EditXiaobian workspace: project timeline, brand brief, and outline/script actions"
-coverCaption: "The project workspace: schedule, brand brief, then outline and script."
+coverAlt: "EditXiaobian workspace home: recent projects, upcoming deadlines, and shortcuts"
+coverCaption: "The workspace home: recent projects, upcoming deadlines, and shortcuts."
 ---
 
 When I joined, there wasn't a staging environment yet. By the time I left, real users were signing up, using the product, and paying for it. I owned most of the money path.
