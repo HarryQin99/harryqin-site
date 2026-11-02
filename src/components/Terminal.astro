@@ -1,0 +1,86 @@
+<div id="term" aria-label="A payment webhook delivered twice and processed once" role="img"></div>
+
+<style>
+  #term {
+    margin: 40px 0 0;
+    padding: 16px 18px;
+    background: var(--code);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    height: 260px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font: 12.5px/1.85 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--faint);
+    white-space: pre;
+  }
+  #term :global(.ln:nth-last-child(-n + 3)) { color: var(--soft); }
+  #term :global(.ln:last-child) { color: var(--ink); }
+  #term :global(.y) { background: var(--hl); color: #000; padding: 0 3px; border-radius: 2px; }
+  #term :global(.cur) {
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    vertical-align: -0.15em;
+    background: var(--soft);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+
+<script is:inline>
+  (() => {
+    const term = document.getElementById("term");
+    const S = [
+      ["cmd", "consume payments.webhook"],
+      ["out", "  evt_7f3a  order.paid  ¥99.00"],
+      ["cmd", "seen(order_8812)?"],
+      ["out", "  no  → grant 30 days, mark seen"],
+      ["cmd", "consume payments.webhook    # provider retry"],
+      ["out", "  evt_7f3a  order.paid  ¥99.00"],
+      ["cmd", "seen(order_8812)?"],
+      ["out", "  yes → skip"],
+      ["y", "charged once, granted once"],
+    ];
+    const MAX = 11;
+    const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    const line = ([k, t]) => (k === "cmd" ? "$ " + esc(t) : k === "out" ? esc(t) : `<span class="y">${esc(t)}</span>`);
+    let lines = [];
+    const render = (partial, cur) => {
+      const h = lines.slice(-MAX).map((l) => `<div class="ln">${l}</div>`);
+      if (partial !== undefined) h.push(`<div class="ln">$ ${esc(partial)}${cur ? '<span class="cur"></span>' : ""}</div>`);
+      term.innerHTML = h.slice(-MAX).join("");
+    };
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      lines = S.map(line);
+      render();
+      return;
+    }
+
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    (async () => {
+      for (;;) {
+        lines = [];
+        for (const [k, t] of S) {
+          if (k === "cmd") {
+            for (let i = 1; i <= t.length; i++) {
+              render(t.slice(0, i), true);
+              await wait(26);
+            }
+            lines.push(line([k, t]));
+            await wait(300);
+          } else if (k === "out") {
+            lines.push(line([k, t]));
+            render();
+            await wait(420);
+          } else {
+            lines.push(line([k, t]));
+            render();
+            await wait(3500);
+          }
+        }
+      }
+    })();
+  })();
+</script>
