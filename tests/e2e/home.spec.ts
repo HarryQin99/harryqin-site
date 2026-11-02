@@ -57,3 +57,12 @@ test.describe("no horizontal scroll at 375px", () => {
     });
   }
 });
+
+test("terminal readable without JS", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.locator("#term")).toContainText("seen(order_8812)?");
+  await expect(page.locator("#term .y")).toHaveText("charged once, granted once");
+  await context.close();
+});

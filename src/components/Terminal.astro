@@ -1,4 +1,21 @@
-<div id="term" aria-label="A payment webhook delivered twice and processed once" role="img"></div>
+---
+// The script animates these; the HTML ships their final state so the box is readable without JS.
+const S: [string, string][] = [
+  ["cmd", "consume payments.webhook"],
+  ["out", "  evt_7f3a  order.paid  ¥99.00"],
+  ["cmd", "seen(order_8812)?"],
+  ["out", "  no  → grant 30 days, mark seen"],
+  ["cmd", "consume payments.webhook    # provider retry"],
+  ["out", "  evt_7f3a  order.paid  ¥99.00"],
+  ["cmd", "seen(order_8812)?"],
+  ["out", "  yes → skip"],
+  ["y", "charged once, granted once"],
+];
+---
+
+<div id="term" aria-label="A payment webhook delivered twice and processed once" role="img" data-lines={JSON.stringify(S)}>
+  {S.map(([k, t]) => <div class="ln">{k === "cmd" ? `$ ${t}` : k === "y" ? <span class="y">{t}</span> : t}</div>)}
+</div>
 
 <style>
   #term {
@@ -31,17 +48,7 @@
 <script is:inline>
   (() => {
     const term = document.getElementById("term");
-    const S = [
-      ["cmd", "consume payments.webhook"],
-      ["out", "  evt_7f3a  order.paid  ¥99.00"],
-      ["cmd", "seen(order_8812)?"],
-      ["out", "  no  → grant 30 days, mark seen"],
-      ["cmd", "consume payments.webhook    # provider retry"],
-      ["out", "  evt_7f3a  order.paid  ¥99.00"],
-      ["cmd", "seen(order_8812)?"],
-      ["out", "  yes → skip"],
-      ["y", "charged once, granted once"],
-    ];
+    const S = JSON.parse(term.dataset.lines);
     const MAX = 11;
     const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
     const line = ([k, t]) => (k === "cmd" ? "$ " + esc(t) : k === "out" ? esc(t) : `<span class="y">${esc(t)}</span>`);
