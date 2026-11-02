@@ -1,0 +1,39 @@
+<button id="theme-toggle" class="tg" type="button" aria-label="Switch colour theme"></button>
+
+<style>
+  .tg {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    font: 13px -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--faint);
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .tg:hover { color: var(--ink); }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    const systemDark = () => matchMedia("(prefers-color-scheme: dark)").matches;
+    const current = () => root.dataset.theme || (systemDark() ? "dark" : "light");
+    // The label names the mode a click switches to.
+    const render = () => {
+      button.textContent = current() === "dark" ? "light" : "dark";
+    };
+    button.addEventListener("click", () => {
+      const next = current() === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {}
+      render();
+    });
+    render();
+  })();
+</script>

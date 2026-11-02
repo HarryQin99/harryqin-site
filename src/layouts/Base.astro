@@ -1,0 +1,59 @@
+---
+import "../styles/global.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Apply a stored theme before first paint; otherwise CSS follows the system setting.
+      try {
+        const stored = localStorage.getItem("theme");
+        if (stored === "light" || stored === "dark") document.documentElement.dataset.theme = stored;
+      } catch {}
+    </script>
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <ThemeToggle />
+    <div class="wrap">
+      <header>
+        <a class="me" href="/">Harry Qin</a>
+        <nav>
+          <a href="/projects">Projects</a>
+          <a href="/about">About</a>
+          <a href="/resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        </nav>
+      </header>
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 64px;
+    font-size: 15px;
+  }
+  .me { font-weight: 600; text-decoration: none; }
+  nav { display: flex; gap: 20px; color: var(--soft); }
+  nav a { text-decoration: none; }
+  nav a:hover { color: var(--ink); }
+  @media (max-width: 560px) {
+    header { flex-direction: column; gap: 8px; margin-bottom: 48px; }
+  }
+</style>

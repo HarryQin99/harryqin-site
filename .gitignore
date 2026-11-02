@@ -5,3 +5,9 @@ dist/
 .vercel/
 .DS_Store
 docs/
+.env
+.env.production
+*.log
+.idea/
+test-results/
+playwright-report/
