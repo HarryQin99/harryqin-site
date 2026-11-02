@@ -1,0 +1,65 @@
+---
+import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
+import { render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { getSortedProjects } from "../../lib/projects";
+
+export const getStaticPaths = (async () => {
+  const projects = await getSortedProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, prev: projects[i - 1], next: projects[i + 1] },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  prev?: CollectionEntry<"projects">;
+  next?: CollectionEntry<"projects">;
+}
+
+const { project, prev, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+---
+
+<Base title={`${data.title} · Harry Qin`} description={data.summary}>
+  <h1>{data.title}</h1>
+  <p class="meta">
+    {data.role} · {data.period}
+    {
+      data.links.map((link) => (
+        <>
+          {" · "}
+          <a href={link.href} target="_blank" rel="noopener">{link.label}</a>
+        </>
+      ))
+    }
+  </p>
+  <p class="lead">{data.lead}</p>
+  {
+    data.cover && (
+      <figure class="fig">
+        <Image src={data.cover} alt={data.coverAlt ?? ""} width={1280} />
+        {data.coverCaption && <figcaption>{data.coverCaption}</figcaption>}
+      </figure>
+    )
+  }
+  <div class="body"><Content /></div>
+  <nav class="pn" aria-label="More projects">
+    {prev ? <a href={`/projects/${prev.id}`}>← {prev.data.title}</a> : <a href="/projects">← Projects</a>}
+    {next ? <a href={`/projects/${next.id}`}>{next.data.title} →</a> : <a href="/projects">Projects →</a>}
+  </nav>
+</Base>
+
+<style>
+  .meta { color: var(--faint); font-size: 14px; margin: -12px 0 32px; }
+  .fig { margin: 8px 0 28px; }
+  .fig :global(img) { width: 100%; display: block; border: 1px solid var(--line); border-radius: 6px; }
+  .fig figcaption { font-size: 13px; color: var(--faint); margin-top: 8px; }
+  .body :global(ul) { padding-left: 18px; margin: 0 0 16px; color: var(--soft); }
+  .body :global(li) { margin: 6px 0; }
+  .body :global(li strong) { color: var(--ink); font-weight: 600; }
+  .pn { display: flex; justify-content: space-between; margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 15px; }
+</style>

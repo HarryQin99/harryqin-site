@@ -1,0 +1,17 @@
+---
+import Base from "../../layouts/Base.astro";
+import ProjectList from "../../components/ProjectList.astro";
+import { getSortedProjects } from "../../lib/projects";
+
+const projects = await getSortedProjects();
+---
+
+<Base title="Projects · Harry Qin" description="Side projects and a startup.">
+  <h1>Projects</h1>
+  <p>Side projects and a startup. Work projects are on my <a href="/resume.pdf" target="_blank" rel="noopener">résumé</a>.</p>
+  <div class="spaced"><ProjectList projects={projects} /></div>
+</Base>
+
+<style>
+  .spaced { margin-top: 32px; }
+</style>

@@ -61,6 +61,16 @@ code {
 
 img { max-width: 100%; height: auto; }
 
+/* Row list: projects and experience. */
+.list { list-style: none; padding: 0; margin: 0; }
+.list li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.list li:first-child { border-top: 1px solid var(--line); }
+.list a { text-decoration: none; font-weight: 500; }
+.list a:hover { text-decoration: underline; }
+.list .d { color: var(--soft); font-size: 14px; display: block; font-weight: 400; }
+.list .y { color: var(--faint); font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
 @media (max-width: 560px) {
   .wrap { padding-top: 56px; }
+  .list li { flex-direction: column; gap: 2px; }
 }
