@@ -1,6 +1,8 @@
 ---
+import { getImage } from "astro:assets";
 import "../styles/global.css";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import harry from "../assets/harry.jpg";
 
 interface Props {
   title: string;
@@ -8,6 +10,8 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const ogImage = await getImage({ src: harry, width: 1200, format: "jpg" });
+const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
@@ -23,7 +27,12 @@ const { title, description } = Astro.props;
       } catch {}
     </script>
     <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageUrl} />
   </head>
   <body>
     <ThemeToggle />
