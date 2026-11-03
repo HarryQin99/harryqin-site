@@ -5,13 +5,14 @@ test("name, title and links", async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("Harry Qin");
   await expect(page.locator("h2")).toHaveText("Software Engineer");
   const links = page.locator(".top li a");
-  await expect(links).toHaveText(["Projects", "Résumé", "GitHub", "Email"]);
+  await expect(links).toHaveText(["Projects", "Résumé", "LinkedIn", "GitHub", "Email"]);
   await expect(links.nth(0)).toHaveAttribute("href", "/projects");
   await expect(links.nth(1)).toHaveAttribute("href", "/resume.pdf");
   await expect(links.nth(1)).toHaveAttribute("target", "_blank");
-  await expect(links.nth(2)).toHaveAttribute("href", "https://github.com/HarryQin99");
-  await expect(links.nth(3)).toHaveAttribute("href", "mailto:harryqinyf@outlook.com");
-  await expect(page.locator("body")).not.toContainText("LinkedIn");
+  await expect(links.nth(2)).toHaveAttribute("href", "https://www.linkedin.com/in/yongfeng-harry-qin/");
+  await expect(links.nth(2)).toHaveAttribute("target", "_blank");
+  await expect(links.nth(3)).toHaveAttribute("href", "https://github.com/HarryQin99");
+  await expect(links.nth(4)).toHaveAttribute("href", "mailto:harryqinyf@outlook.com");
 });
 
 test("name on the left, links on the right", async ({ page }) => {
