@@ -1,6 +1,7 @@
 ---
 import { getImage } from "astro:assets";
 import "../styles/global.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import harry from "../assets/harry.jpg";
 
 interface Props {
@@ -20,6 +21,12 @@ const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Apply a stored choice before first paint; white is the default.
+      try {
+        if (localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark";
+      } catch {}
+    </script>
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {description && <meta name="description" content={description} />}
@@ -29,6 +36,7 @@ const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
     <meta property="og:image" content={ogImageUrl} />
   </head>
   <body>
+    <ThemeToggle />
     <div class={home ? "home" : "wrap"}>
       {
         !home && (

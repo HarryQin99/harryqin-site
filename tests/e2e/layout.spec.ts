@@ -10,11 +10,6 @@ test("inner pages link home", async ({ page }) => {
   }
 });
 
-test("no theme toggle", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.locator("button")).toHaveCount(0);
-});
-
 test.describe("stays white when the system is dark", () => {
   test.use({ colorScheme: "dark" });
   test("white background", async ({ page }) => {
@@ -28,5 +23,39 @@ test.describe("follows system light", () => {
   test("light background", async ({ page }) => {
     await page.goto("/");
     expect(await bodyBg(page)).toBe("rgb(255, 255, 255)");
+  });
+});
+
+test.describe("theme toggle", () => {
+  test.use({ colorScheme: "dark" });
+
+  test("defaults to white with a dark option", async ({ page }) => {
+    await page.goto("/");
+    expect(await bodyBg(page)).toBe("rgb(255, 255, 255)");
+    await expect(page.locator("#theme-toggle")).toHaveText("dark");
+  });
+
+  test("switches to dark and remembers it", async ({ page }) => {
+    await page.goto("/projects");
+    await page.locator("#theme-toggle").click();
+    expect(await bodyBg(page)).toBe("rgb(0, 0, 0)");
+    await expect(page.locator("#theme-toggle")).toHaveText("light");
+    await page.goto("/");
+    expect(await bodyBg(page)).toBe("rgb(0, 0, 0)");
+  });
+
+  test("still switches when storage throws", async ({ page }) => {
+    await page.addInitScript(() => {
+      Storage.prototype.getItem = () => {
+        throw new Error("blocked");
+      };
+      Storage.prototype.setItem = () => {
+        throw new Error("blocked");
+      };
+    });
+    await page.goto("/");
+    expect(await bodyBg(page)).toBe("rgb(255, 255, 255)");
+    await page.locator("#theme-toggle").click();
+    expect(await bodyBg(page)).toBe("rgb(0, 0, 0)");
   });
 });

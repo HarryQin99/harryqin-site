@@ -1,0 +1,38 @@
+<button id="theme-toggle" class="tg" type="button">dark</button>
+
+<style>
+  .tg {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    font: 13px -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--faint);
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .tg:hover { color: var(--ink); }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    // White is the default; the label names the mode a click switches to.
+    const current = () => (root.dataset.theme === "dark" ? "dark" : "light");
+    const render = () => {
+      button.textContent = current() === "dark" ? "light" : "dark";
+    };
+    button.addEventListener("click", () => {
+      const next = current() === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {}
+      render();
+    });
+    render();
+  })();
+</script>

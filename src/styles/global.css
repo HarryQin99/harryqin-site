@@ -7,6 +7,15 @@
   --code: #f4f4f4;
 }
 
+:root[data-theme="dark"] {
+  --bg: #000;
+  --ink: #ededed;
+  --soft: #a3a3a3;
+  --faint: #666;
+  --line: #222;
+  --code: #0e0e0e;
+}
+
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--ink); }
 body {
