@@ -15,7 +15,13 @@ test("meta tags", async ({ page }) => {
   await expect(page).toHaveTitle("EditXiaobian · Harry Qin");
 });
 
-test("favicon", async ({ page }) => {
+test("favicon is Harry's photo", async ({ page, request }) => {
   await page.goto("/");
-  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/favicon.svg");
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/favicon.png");
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute("href", "/apple-touch-icon.png");
+  for (const path of ["/favicon.png", "/apple-touch-icon.png"]) {
+    const res = await request.get(path);
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
+  }
 });
