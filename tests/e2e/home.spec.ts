@@ -39,3 +39,10 @@ test.describe("no horizontal scroll at 375px", () => {
     });
   }
 });
+
+test("now section", async ({ page }) => {
+  await page.goto("/");
+  const now = page.locator("section.now");
+  await expect(now.locator("h3")).toHaveText("Now");
+  await expect(now).toContainText("Senior Software Engineer at Heidi");
+});
