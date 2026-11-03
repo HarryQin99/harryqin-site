@@ -1,47 +1,24 @@
 ---
-import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
-import ProjectList from "../components/ProjectList.astro";
-import Terminal from "../components/Terminal.astro";
-import { getSortedProjects } from "../lib/projects";
-import harry from "../assets/harry.jpg";
-
-const lead =
-  "I'm a backend engineer in Melbourne. Most of my work has been in systems where money moves: disputes at Cash App, financial services at Bukalapak, and billing at a startup I helped build.";
-const projects = await getSortedProjects();
 ---
 
-<Base title="Harry Qin" description={lead}>
-  <div class="top">
-    <div>
-      <h1>Harry Qin</h1>
-      <p class="lead">{lead}</p>
-      <p>
-        This site is where I write up side projects in more detail than a résumé allows. Right now I'm a senior
-        engineer at Heidi, working on the commerce platform. Reach me on <a href="https://github.com/HarryQin99"
-          target="_blank"
-          rel="noopener">GitHub</a
-        > or by <a href="mailto:harryqinyf@outlook.com">email</a>.
-      </p>
-    </div>
-    <div class="photo">
-      <Image src={harry} alt="Harry with a coffee outside Flinders Street Station" width={600} loading="eager" />
-    </div>
-  </div>
-
-  <Terminal />
-
-  <h2>Projects</h2>
-  <ProjectList projects={projects} />
+<Base title="Harry Qin" description="Harry Qin, software engineer in Melbourne." home>
+  <h1>Harry Qin</h1>
+  <h2>Software Engineer</h2>
+  <ul>
+    <li><a href="/projects">Projects</a></li>
+    <li><a href="/resume.pdf" target="_blank" rel="noopener">Résumé</a></li>
+    <li><a href="https://github.com/HarryQin99" target="_blank" rel="noopener">GitHub</a></li>
+    <li><a href="mailto:harryqinyf@outlook.com">Email</a></li>
+  </ul>
 </Base>
 
 <style>
-  .top { display: grid; grid-template-columns: 1fr 200px; gap: 32px; align-items: start; }
-  .photo { margin-top: 6px; border-radius: 6px; overflow: hidden; aspect-ratio: 3 / 4; background: var(--code); }
-  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
-  @media (max-width: 560px) {
-    .top { grid-template-columns: 1fr; }
-    .photo { aspect-ratio: 4 / 3; order: -1; }
-    .photo :global(img) { object-position: 50% 38%; }
-  }
+  h1, h2, ul { text-align: center; }
+  h1 { font-size: 40px; margin: 20vh 0 12px; }
+  h2 { font-size: 20px; font-weight: 400; color: var(--soft); margin: 0 0 48px; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li { font-size: 18px; margin: 14px 0; }
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; }
 </style>

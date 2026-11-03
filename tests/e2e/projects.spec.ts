@@ -55,14 +55,9 @@ test("prev/next", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Projects →" })).toHaveAttribute("href", "/projects");
 });
 
-test("about page", async ({ page }) => {
-  await page.goto("/about");
-  const rows = page.locator("ul.list > li");
-  await expect(rows).toHaveCount(5);
-  await expect(rows.nth(0)).toContainText("Heidi");
-  await expect(rows.nth(0)).toContainText("Senior Software Engineer");
-  await expect(rows.nth(0)).toContainText("2026 –");
-  await expect(page.getByText("University of Melbourne, Computer and Software Engineering.")).toBeVisible();
+test("about page removed", async ({ page }) => {
+  const res = await page.goto("/about");
+  expect(res?.status()).toBe(404);
 });
 
 test("unknown route shows 404", async ({ page }) => {

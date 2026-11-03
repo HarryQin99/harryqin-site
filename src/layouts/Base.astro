@@ -1,15 +1,16 @@
 ---
 import { getImage } from "astro:assets";
 import "../styles/global.css";
-import ThemeToggle from "../components/ThemeToggle.astro";
 import harry from "../assets/harry.jpg";
 
 interface Props {
   title: string;
   description?: string;
+  /** The home page is the name itself, so it skips the back-to-home header. */
+  home?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, home = false } = Astro.props;
 const ogImage = await getImage({ src: harry, width: 1200, format: "jpg" });
 const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
 ---
@@ -19,13 +20,6 @@ const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script is:inline>
-      // Apply a stored theme before first paint; otherwise CSS follows the system setting.
-      try {
-        const stored = localStorage.getItem("theme");
-        if (stored === "light" || stored === "dark") document.documentElement.dataset.theme = stored;
-      } catch {}
-    </script>
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {description && <meta name="description" content={description} />}
@@ -35,16 +29,14 @@ const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
     <meta property="og:image" content={ogImageUrl} />
   </head>
   <body>
-    <ThemeToggle />
-    <div class="wrap">
-      <header>
-        <a class="me" href="/">Harry Qin</a>
-        <nav>
-          <a href="/projects">Projects</a>
-          <a href="/about">About</a>
-          <a href="/resume.pdf" target="_blank" rel="noopener">Résumé</a>
-        </nav>
-      </header>
+    <div class={home ? "home" : "wrap"}>
+      {
+        !home && (
+          <header>
+            <a class="me" href="/">Harry Qin</a>
+          </header>
+        )
+      }
       <main>
         <slot />
       </main>
@@ -53,18 +45,6 @@ const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url).href;
 </html>
 
 <style>
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 64px;
-    font-size: 15px;
-  }
+  header { margin-bottom: 48px; font-size: 15px; }
   .me { font-weight: 600; text-decoration: none; }
-  nav { display: flex; gap: 20px; color: var(--soft); }
-  nav a { text-decoration: none; }
-  nav a:hover { color: var(--ink); }
-  @media (max-width: 560px) {
-    header { flex-direction: column; gap: 8px; margin-bottom: 48px; }
-  }
 </style>
