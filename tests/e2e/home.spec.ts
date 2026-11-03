@@ -47,7 +47,7 @@ test("now section", async ({ page }) => {
   await expect(now.locator("h3")).toHaveText("What I'm doing now");
   await expect(now.locator("li")).toHaveCount(2);
   expect(await now.locator("li").first().evaluate((el) => getComputedStyle(el).listStyleType)).toBe("none");
-  await expect(now).toContainText("model-release-controller");
+  await expect(now).toContainText("ml-model-release-controller");
   await expect(now).toContainText("LLM training and inference");
   await expect(now).not.toContainText("Heidi");
   await expect(now.getByRole("link", { name: "namiai.tech" })).toHaveAttribute("href", "https://namiai.tech/");
