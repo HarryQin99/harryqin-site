@@ -4,7 +4,7 @@ test("name, title and links", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("h1")).toHaveText("Harry Qin");
   await expect(page.locator("h2")).toHaveText("Software Engineer");
-  const links = page.locator("main li a");
+  const links = page.locator(".top li a");
   await expect(links).toHaveText(["Projects", "Résumé", "GitHub", "Email"]);
   await expect(links.nth(0)).toHaveAttribute("href", "/projects");
   await expect(links.nth(1)).toHaveAttribute("href", "/resume.pdf");
@@ -19,7 +19,7 @@ test("name on the left, links on the right", async ({ page }) => {
   await page.goto("/");
   const name = await page.locator("h1").boundingBox();
   const title = await page.locator("h2").boundingBox();
-  const links = page.locator("main li a");
+  const links = page.locator(".top li a");
   const first = await links.first().boundingBox();
   const last = await links.last().boundingBox();
   expect(title!.x).toBeCloseTo(name!.x, 0);
@@ -44,5 +44,9 @@ test("now section", async ({ page }) => {
   await page.goto("/");
   const now = page.locator("section.now");
   await expect(now.locator("h3")).toHaveText("Now");
-  await expect(now).toContainText("Senior Software Engineer at Heidi");
+  await expect(now.locator("li")).toHaveCount(2);
+  await expect(now).toContainText("model-release-controller");
+  await expect(now).toContainText("LLM training and inference");
+  await expect(now).not.toContainText("Heidi");
+  await expect(now.getByRole("link", { name: "namiai.tech" })).toHaveAttribute("href", "https://namiai.tech/");
 });

@@ -17,8 +17,18 @@ import Base from "../layouts/Base.astro";
   </div>
   <section class="now">
     <h3>Now</h3>
-    <!-- Edit this line whenever what you're doing changes. -->
-    <p>Senior Software Engineer at Heidi, working on the commerce platform.</p>
+    <!-- Edit these whenever what you're working on changes. -->
+    <ul class="now-list">
+      <li>
+        Building <strong>model-release-controller</strong>: shipping a new ML model version the way you'd ship a
+        service, through offline, shadow, approval and canary gates, with automatic rollback.
+      </li>
+      <li>
+        Learning LLM training and inference, following <a href="https://namiai.tech/" target="_blank" rel="noopener"
+          >namiai.tech</a
+        >.
+      </li>
+    </ul>
   </section>
 </Base>
 
@@ -35,7 +45,10 @@ import Base from "../layouts/Base.astro";
   h2 { font-size: 20px; font-weight: 400; color: var(--soft); margin: 0; }
   .now { max-width: 760px; margin: 72px auto 0; }
   h3 { font-size: 13px; font-weight: 500; color: var(--faint); margin: 0 0 8px; text-transform: none; }
-  .now p { margin: 0; color: var(--ink); }
+  .now-list { display: block; padding-left: 18px; list-style: disc; color: var(--ink); }
+  .now-list li { font-size: 16px; margin: 6px 0; }
+  .now-list strong { font-weight: 600; }
+  .now-list a { text-decoration: underline; text-decoration-color: var(--faint); }
   ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 24px; }
   li { font-size: 17px; }
   a { text-decoration: none; }
