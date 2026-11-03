@@ -15,11 +15,11 @@ test("no theme toggle", async ({ page }) => {
   await expect(page.locator("button")).toHaveCount(0);
 });
 
-test.describe("follows system dark", () => {
+test.describe("stays white when the system is dark", () => {
   test.use({ colorScheme: "dark" });
-  test("dark background", async ({ page }) => {
+  test("white background", async ({ page }) => {
     await page.goto("/");
-    expect(await bodyBg(page)).toBe("rgb(0, 0, 0)");
+    expect(await bodyBg(page)).toBe("rgb(255, 255, 255)");
   });
 });
 
