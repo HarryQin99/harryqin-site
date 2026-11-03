@@ -32,14 +32,16 @@ test.describe("theme toggle", () => {
   test("defaults to white with a dark option", async ({ page }) => {
     await page.goto("/");
     expect(await bodyBg(page)).toBe("rgb(255, 255, 255)");
-    await expect(page.locator("#theme-toggle")).toHaveText("dark");
+    await expect(page.locator("#theme-toggle")).toHaveAttribute("aria-label", "Switch to dark theme");
+    await expect(page.locator("#theme-toggle svg:visible")).toHaveCount(1);
+    await expect(page.locator("#theme-toggle")).toHaveText("");
   });
 
   test("switches to dark and remembers it", async ({ page }) => {
     await page.goto("/projects");
     await page.locator("#theme-toggle").click();
     expect(await bodyBg(page)).toBe("rgb(0, 0, 0)");
-    await expect(page.locator("#theme-toggle")).toHaveText("light");
+    await expect(page.locator("#theme-toggle")).toHaveAttribute("aria-label", "Switch to light theme");
     await page.goto("/");
     expect(await bodyBg(page)).toBe("rgb(0, 0, 0)");
   });

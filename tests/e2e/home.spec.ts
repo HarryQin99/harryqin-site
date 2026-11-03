@@ -14,9 +14,18 @@ test("name, title and links", async ({ page }) => {
   await expect(page.locator("body")).not.toContainText("LinkedIn");
 });
 
-test("centered and bare", async ({ page }) => {
+test("name on the left, links on the right", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
-  expect(await page.locator("h1").evaluate((el) => getComputedStyle(el).textAlign)).toBe("center");
+  const name = await page.locator("h1").boundingBox();
+  const title = await page.locator("h2").boundingBox();
+  const links = page.locator("main li a");
+  const first = await links.first().boundingBox();
+  const last = await links.last().boundingBox();
+  expect(title!.x).toBeCloseTo(name!.x, 0);
+  expect(first!.x).toBeGreaterThan(name!.x + name!.width);
+  // Links sit in one row.
+  expect(Math.abs(first!.y - last!.y)).toBeLessThan(2);
   await expect(page.locator("img")).toHaveCount(0);
   await expect(page.locator("#term")).toHaveCount(0);
 });
