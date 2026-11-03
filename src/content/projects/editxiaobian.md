@@ -18,7 +18,9 @@ When I joined, there wasn't a staging environment yet. By the time I left, real 
 
 - **Billing.** Plans, pricing, and quotas that reset on each customer's own subscription date, plus upgrade quotes with proration.
 - **Payments.** I took Alipay from sandbox to signing a production merchant account, and added WeChat Pay callbacks. Both are idempotent, so a retried notification never grants twice.
-- **The unglamorous parts.** Token-usage tracking per function, trace logs, an admin console, a staging environment, and helping with the ICP filing.
+- **Admin console.** An internal admin page that shows key product metrics and lets the team handle customer operations.
+- **Observability.** Metrics, alerts, trace logs, and token-usage tracking per function.
+- **The unglamorous parts.** A staging environment, and helping with the ICP filing.
 
 Launch night: database CPU at 100%. We thought we'd built something people couldn't stop using. We had. It just wasn't people. It was a stuck cron job opening new database connections.
 

@@ -26,6 +26,11 @@ test("editxiaobian page", async ({ page }) => {
   );
   const body = page.locator("main");
   await expect(body).toContainText("I owned most of the money path.");
+  await expect(body).toContainText(
+    "Admin console. An internal admin page that shows key product metrics and lets the team handle customer operations.",
+  );
+  await expect(body).toContainText("Observability. Metrics, alerts, trace logs, and token-usage tracking per function.");
+  await expect(body).toContainText("The unglamorous parts. A staging environment, and helping with the ICP filing.");
   await expect(body).toContainText("It was a stuck cron job opening new database connections.");
   await expect(body).not.toContainText("AI revision");
   await expect(body).not.toContainText("ledger");
