@@ -45,6 +45,7 @@ test("now section", async ({ page }) => {
   const now = page.locator("section.now");
   await expect(now.locator("h3")).toHaveText("Now");
   await expect(now.locator("li")).toHaveCount(2);
+  expect(await now.locator("li").first().evaluate((el) => getComputedStyle(el).listStyleType)).toBe("none");
   await expect(now).toContainText("model-release-controller");
   await expect(now).toContainText("LLM training and inference");
   await expect(now).not.toContainText("Heidi");
