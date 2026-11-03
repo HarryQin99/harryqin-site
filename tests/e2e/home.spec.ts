@@ -43,7 +43,7 @@ test.describe("no horizontal scroll at 375px", () => {
 test("now section", async ({ page }) => {
   await page.goto("/");
   const now = page.locator("section.now");
-  await expect(now.locator("h3")).toHaveText("What I'm building now");
+  await expect(now.locator("h3")).toHaveText("What I'm doing now");
   await expect(now.locator("li")).toHaveCount(2);
   expect(await now.locator("li").first().evaluate((el) => getComputedStyle(el).listStyleType)).toBe("none");
   await expect(now).toContainText("model-release-controller");
