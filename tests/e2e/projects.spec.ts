@@ -4,13 +4,16 @@ test("projects index order", async ({ page }) => {
   await page.goto("/projects");
   await expect(page.getByText("Side projects and a startup. Work projects are on my résumé.")).toBeVisible();
   const items = page.locator("ul.list > li");
-  await expect(items).toHaveCount(2);
+  await expect(items).toHaveCount(3);
   await expect(items.nth(0).getByRole("link")).toHaveText("EditXiaobian");
   await expect(items.nth(0)).toContainText("AI scripts for creators doing brand deals. Founding engineer.");
   await expect(items.nth(0)).toContainText("2026");
   await expect(items.nth(1).getByRole("link")).toHaveText("AU Construction Knowledge Bot");
   await expect(items.nth(1)).toContainText("Building-code Q&A that knows when to refuse.");
   await expect(items.nth(1)).toContainText("2026");
+  await expect(items.nth(2).getByRole("link")).toHaveText("ml-model-release-controller");
+  await expect(items.nth(2)).toContainText("Ship a new ML model version the way you'd ship a service.");
+  await expect(items.nth(2)).toContainText("2026");
 });
 
 test("editxiaobian page", async ({ page }) => {
@@ -48,6 +51,24 @@ test("kb page", async ({ page }) => {
   await expect(page.locator("main img")).toHaveCount(0);
 });
 
+test("ml release controller page", async ({ page }) => {
+  await page.goto("/projects/ml-model-release-controller");
+  await expect(page.locator("h1")).toHaveText("ml-model-release-controller");
+  await expect(page.locator(".meta")).toHaveText("Solo · 2026 –");
+  await expect(page.locator(".meta a")).toHaveCount(0);
+  await expect(page.locator("main img")).toHaveCount(0);
+  const body = page.locator("main");
+  await expect(body).toContainText("offline evaluation, shadow traffic, human approval and a canary");
+  await expect(body).toContainText("Only live traffic catches them.");
+  await expect(body).toContainText("Release workflow. A durable Temporal workflow in Java");
+  await expect(body).toContainText("Traffic router.");
+  await expect(body).toContainText("Rollback after release.");
+  await expect(body).toContainText("Release policy.");
+  await expect(body).toContainText("Release page.");
+  await expect(body).toContainText("trained on generated data");
+  await expect(body).toContainText("Java, Temporal, Python, MLflow.");
+});
+
 test("prev/next", async ({ page }) => {
   await page.goto("/projects/editxiaobian");
   await expect(page.getByRole("link", { name: "← Projects" })).toHaveAttribute("href", "/projects");
@@ -57,6 +78,15 @@ test("prev/next", async ({ page }) => {
   );
   await page.goto("/projects/construction-knowledge-bot");
   await expect(page.getByRole("link", { name: "← EditXiaobian" })).toHaveAttribute("href", "/projects/editxiaobian");
+  await expect(page.getByRole("link", { name: "ml-model-release-controller →" })).toHaveAttribute(
+    "href",
+    "/projects/ml-model-release-controller",
+  );
+  await page.goto("/projects/ml-model-release-controller");
+  await expect(page.getByRole("link", { name: "← AU Construction Knowledge Bot" })).toHaveAttribute(
+    "href",
+    "/projects/construction-knowledge-bot",
+  );
   await expect(page.getByRole("link", { name: "Projects →" })).toHaveAttribute("href", "/projects");
 });
 

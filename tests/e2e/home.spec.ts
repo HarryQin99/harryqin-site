@@ -33,7 +33,7 @@ test("name on the left, links on the right", async ({ page }) => {
 
 test.describe("no horizontal scroll at 375px", () => {
   test.use({ viewport: { width: 375, height: 812 } });
-  for (const path of ["/", "/projects", "/projects/editxiaobian", "/projects/construction-knowledge-bot", "/nope"]) {
+  for (const path of ["/", "/projects", "/projects/editxiaobian", "/projects/construction-knowledge-bot", "/projects/ml-model-release-controller", "/nope"]) {
     test(path, async ({ page }) => {
       await page.goto(path);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
